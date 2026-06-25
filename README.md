@@ -4,7 +4,7 @@ This project builds a climate-risk classification workflow for East African Comm
 
 ## Dataset 
 
-- World Bank Group, "Climate Change Knowledge Portal (CCKP): East Africa Regional Meteorological Dataset (ERA5 0.25-degree monthly data)," World Bank Group. Accessed on: June 15, 2026. [Online]. Available: https://climateknowledgeportal.worldbank.org/
+World Bank Group. (n.d.). Climate Change Knowledge Portal (CCKP): EAC countries, meteorological dataset (ERA5 0.25-degree monthly data). World Bank Group. https://climateknowledgeportal.worldbank.org/
 
 ## Project Goal
 
