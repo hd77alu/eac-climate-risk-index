@@ -2,9 +2,14 @@
 
 This project builds a climate-risk classification workflow for East African Community (EAC) countries using monthly World Bank Climate Change Knowledge Portal data. The notebook combines exploratory data analysis, preprocessing, feature engineering, and two model families: classical tree-based classifiers and deep neural networks. The main prediction target is `tx84rr`, a temperature-based excess mortality indicator that is converted into a three-class vulnerability label.
 
-## Dataset 
+## Dataset
 
-World Bank Group. (n.d.). Climate Change Knowledge Portal (CCKP): EAC countries, meteorological dataset (ERA5 0.25-degree monthly data). World Bank Group. https://climateknowledgeportal.worldbank.org/
+- **Source:** [The World Bank Climate Change Knowledge Portal (CCKP)](https://climateknowledgeportal.worldbank.org/)
+- **Countries code:** BDI, COD, KEN, RWA, SOM, SSD, TZA, UGA
+- **Collection:** ERA5 0.25-degree (era5-x0.25)
+- **Type:** Timeseries
+- **Variables:** `tas, txx, hd30, tr23, hurs, cdd, rx5day, tx84rr`
+- **Aggregation:** Monthly
 
 ## Project Goal
 
@@ -55,47 +60,40 @@ The notebook uses the following climate indicators:
 
 ## Setup Instructions
 
-### 1. Clone or Download the Repository
-
+**1. Clone or Download the Repository**
 ```bash
 git clone https://github.com/hd77alu/eac-climate-risk-index
 cd eac-climate-risk-index
 ```
+**2. Create and activate a Python virtual environment**
 
-### 2. Create a Python environment
-
-Create and activate a virtual environment, then install the dependencies used in the notebook.
-
-```bash
-python -m venv .venv
-```
-
-On Windows:
-
-```bash
-.venv\Scripts\activate
-```
-
-### 3. Install dependencies
-
-The notebook uses the following Python packages:
-
-- pandas
-- numpy
-- matplotlib
-- seaborn
-- scikit-learn
-- tensorflow
-
-Install them with:
-
+**3. Install notebook dependencies:**
 ```bash
 pip install pandas numpy matplotlib seaborn scikit-learn tensorflow
 ```
 
-### 4. Run the notebook
+## How to Use the Notebook
 
-Open `notebook_mmt_health_risk.ipynb` in VS Code or Jupyter and run the cells from top to bottom.
+### Method 1: Using Jupyter Notebook (Local)
+```bash
+git clone https://github.com/hd77alu/eac-climate-risk-index
+cd eac-climate-risk-index
+
+# Launch Jupyter Notebook
+jupyter notebook
+
+# Open the notebook: notebook_mmt_health_risk.ipynb
+```
+### Method 2: Using Google Colab
+1. Click the "Open in Colab" badge at the top of the notebook
+2. Upload the files inside the `dataset` folder to your Colab files
+3. Run all cells
+
+### Method 3: Using VS Code
+1. Open VS Code
+2. Install the Jupyter extension (if not already installed)
+3. Open the folder `eac-climate-risk-index`
+4. Click on `notebook_mmt_health_risk.ipynb`
 
 ## Data Preprocessing Logic
 
@@ -105,7 +103,7 @@ The notebook applies the following preprocessing steps:
 2. Convert each dataset from wide monthly format to long format using a custom `melt_world_bank_df()` function.
 3. Parse the `date` column as a datetime field.
 4. Merge all climate indicators on `code`, `name`, and `date` to create a unified modeling table.
-5. Restrict the modeling window to years 2000 to 2024.
+5. Restrict the modeling window to the years 2000 to 2024.
 6. Create the target label `vulnerability_target` from `tx84rr` using risk thresholds.
 
 ## Handling Missing Values
@@ -184,7 +182,7 @@ For evaluation, the notebook uses accuracy, precision, recall, F1-score, ROC-AUC
 
 ## Results
 
-The Extra Tree and the Random Forest both outperformed the deep neural network (DNN) model, which can be attributed to the tubular structure of the data, which favors tree-based models rather than deep learning. Between the two classical models, the random split nature of the Extra Tree, which consequently reduces variance in a small dataset, resulted in nudging the Random Forest and achieving the best performance in predicting vulnerability risk.
+The Extra Tree and the Random Forest both outperformed the deep neural network (DNN) model, likely due to the tubular structure of the data, which favors tree-based models over deep learning. Between the two classical models, the random split nature of the Extra Tree, which consequently reduces variance in a small dataset, resulted in nudging the Random Forest and achieving the best performance in predicting vulnerability risk.
 
 
 ### Best classical model
@@ -201,8 +199,9 @@ The project shows that monthly climate indicators can be used to build a useful 
 
 The main limitations identified in the notebook are:
 
-- no socio-economic variables such as poverty, healthcare access, or population density
-- class imbalance, especially for the severe risk class
-- limited sample size for deep neural networks
-- monthly aggregation that can smooth out short-lived extreme events
-- no temporal sequence modeling for compounding climate effects
+- Data volume deficit for advanced deep learning.
+- Severe class imbalance and majority class Bias.
+- ERA5 0.25-degree spatial grid offers high-resolution meteorological tracking, but it can still struggle to capture localized microclimates, specific topographic variations, etc.
+- The target variable is heavily dependent on the chosen mathematical proxies.
+- Feature space currently relies 100% on environmental indicators; it lacks context on regional poverty rates, population density, and local healthcare capacity.
+
